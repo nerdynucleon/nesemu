@@ -14,6 +14,10 @@ class nes {
 
     static void signalHandler(int sig);
 
+    const void * videoBuffer();
+    int32_t videoBufferWidth();
+    int32_t videoBufferHeight();
+
   private:
     cpu6502 cpu;
     ppu ppu;

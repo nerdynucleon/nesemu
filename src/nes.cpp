@@ -31,3 +31,13 @@ void nes::dump() {
   cpu.dump();
   ppu.dump();
 }
+
+const void * nes::videoBuffer() {
+  return ppu.videoBuffer();
+}
+int32_t nes::videoBufferWidth() {
+  return kNesVideoWidth;
+}
+int32_t nes::videoBufferHeight() {
+  return kNesVideoHeight;
+}

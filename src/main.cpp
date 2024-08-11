@@ -1,20 +1,13 @@
 #include "nes.h"
+#include "opengl.h"
 
 #define GL_SILENCE_DEPRECATION true
 #include <GLFW/glfw3.h>
 #include <iostream>
 
-// Vertex data for a triangle
-float vertices[] = {
-    -0.5f, -0.5f, 0.0f,
-     0.5f, -0.5f, 0.0f,
-     0.0f,  0.5f, 0.0f
-};
-
 void framebuffer_size_callback(GLFWwindow* window, int width, int height) {
-    glViewport(0, 0, width, height);
+    GL(glViewport(0, 0, width, height));
 }
-
 
 int main(int argc, char* argv[]) {
   nes device;
@@ -43,25 +36,21 @@ int main(int argc, char* argv[]) {
   // Make the window's context current
   glfwMakeContextCurrent(window);
 
+  OpenGL gl;
+  gl.init();
+
   // Set the framebuffer size callback
   glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
 
   // Loop until the user closes the window
   while (!glfwWindowShouldClose(window)) {
-      // Render here
-      glClear(GL_COLOR_BUFFER_BIT);
+    gl.render(device.videoBuffer(), device.videoBufferWidth(), device.videoBufferHeight());
 
-      // Draw the triangle
-      glEnableClientState(GL_VERTEX_ARRAY);
-      glVertexPointer(3, GL_FLOAT, 0, vertices);
-      glDrawArrays(GL_TRIANGLES, 0, 3);
-      glDisableClientState(GL_VERTEX_ARRAY);
+		// Swap buffers
+		glfwSwapBuffers(window);
 
-      // Swap front and back buffers
-      glfwSwapBuffers(window);
-
-      // Poll for and process events
-      glfwPollEvents();
+    // Poll for and process events
+    glfwPollEvents();
   }
 
   // Clean up and exit
